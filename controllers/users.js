@@ -32,10 +32,12 @@ module.exports = {
     },
 
     signIn: async (req, res, next) => {
+        
         console.log('Signin called');
     },
 
     secret: async (req, res, next) => {
-        console.log('Secret called');
+        console.log('Tengo acceso!!!');
+        res.json({ secret: "Resource" });
     }
 }
