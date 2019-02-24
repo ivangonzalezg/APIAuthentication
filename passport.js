@@ -16,7 +16,7 @@ passport.use(new JWTStrategy({
             return done(null, false);
         }
 
-        done(null, user);                        
+        done(null, user);
     } catch (error) {
         done(error, false);
     }
@@ -25,11 +25,21 @@ passport.use(new JWTStrategy({
 passport.use(new LocalStrategy({
     usernameField: 'email',
 }, async (email, password, done) => {
-    const user = await User.findOne({ email });
+    try {
+        const user = await User.findOne({ email });
 
-    if (!user) {
-        return done(null, false);
+        if (!user) {
+            return done(null, false);
+        }
+
+        const isMatch = await user.isValidPassword(password);
+
+        if (!isMatch) {
+            return done(null, false);
+        }
+
+        done(null, user);
+    } catch (error) {
+        done(error, false);
     }
-
-    
 }));
